@@ -1,0 +1,45 @@
+<!-- Reservations page for viewing the user's reservation history -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel Reservation – My Reservations</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Hotel Reservation</a>
+            <ul class="nav-links">
+                <li><a href="login.html">Login/Register</a></li>
+                <li><a href="rooms.html">Rooms</a></li>
+                <li><a href="reservations.html" class="active">My Reservations</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="reservations-section">
+            <h2>My Reservations</h2>
+            <p id="reservationsMessage" class="form-message"></p>
+            <table id="reservationsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Room</th>
+                        <th>Check‑In</th>
+                        <th>Check‑Out</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Hotel Reservation. All rights reserved.</p>
+    </footer>
+    <script src="js/script.js"></script>
+</body>
+</html>

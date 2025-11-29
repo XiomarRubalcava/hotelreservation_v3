@@ -1,0 +1,39 @@
+<!-- Rooms page for searching and reserving available hotel rooms -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel Reservation – Rooms</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Hotel Reservation</a>
+            <ul class="nav-links">
+                <li><a href="login.html">Login/Register</a></li>
+                <li><a href="rooms.html" class="active">Rooms</a></li>
+                <li><a href="reservations.html">My Reservations</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="search-section">
+            <h2>Search Available Rooms</h2>
+            <form id="searchForm">
+                <label for="checkIn">Check‑in Date:</label>
+                <input type="date" id="checkIn" required />
+                <label for="checkOut">Check‑out Date:</label>
+                <input type="date" id="checkOut" required />
+                <button type="submit" class="btn-primary">Search</button>
+            </form>
+        </section>
+        <section id="roomsContainer" class="rooms-container"></section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Hotel Reservation. All rights reserved.</p>
+    </footer>
+    <script src="js/script.js"></script>
+</body>
+</html>
