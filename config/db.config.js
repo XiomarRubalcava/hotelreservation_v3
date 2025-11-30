@@ -3,10 +3,17 @@ const mysql = require('mysql2/promise');
 
 // Configuration using environment variables for security
 const dbConfig = {
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'your_secure_password',
-    database: process.env.DB_NAME || 'hotel_reservations_db',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT,
+
+    // IMPORTANT: Railway requires SSL for external connections
+    ssl: {
+        rejectUnauthorized: false
+    },
+
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -23,8 +30,8 @@ dbPool.getConnection()
     })
     .catch((err) => {
         console.error('Database connection failed:', err.message);
-        // Exit the process if the connection fails
-        process.exit(1);
+        // Exit ONLY if you want to stop deployment on DB failure
+        // process.exit(1);
     });
 
 module.exports = dbPool;
