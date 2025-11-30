@@ -6,7 +6,8 @@
  */
 
 // Base URL for your API endpoints (update port if your backend runs on a different port)
-const API_BASE_URL = 'http://localhost:3000/api/v1';
+const API_BASE_URL = "https://hotelreservation-v3-2.onrender.com/api/v1";
+
 
 // Wait for the DOM to be fully loaded before attaching event listeners
 document.addEventListener('DOMContentLoaded', () => {
