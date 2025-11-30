@@ -1,33 +1,60 @@
-<!-- Frontend home page for the hotel reservation project -->
+<!-- docs/index.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hotel Reservation – Home</title>
-    <link rel="stylesheet" href="css/styles.css" />
+    <meta charset="UTF-8">
+    <title>Hotel Reservation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
+
 <body>
-    <header>
-        <nav>
-            <a href="index.html" class="logo">Hotel Reservation</a>
-            <ul class="nav-links">
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="logo">Hotel Reservation</div>
+        <nav id="navMenu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="login.html">Login/Register</a></li>
                 <li><a href="rooms.html">Rooms</a></li>
                 <li><a href="reservations.html">My Reservations</a></li>
             </ul>
         </nav>
+        <button id="navToggle">&#9776;</button>
     </header>
-    <main>
-        <section class="hero">
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="images/hero.png" alt="Hotel exterior">
+        <div class="hero-overlay">
             <h1>Welcome to Our Hotel</h1>
             <p>Book your stay with ease and comfort.</p>
-            <a href="rooms.html" class="btn-primary">View Rooms</a>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 Hotel Reservation. All rights reserved.</p>
-    </footer>
+            <a href="rooms.html"><button>View Rooms</button></a>
+        </div>
+    </section>
+
+    <section>
+        <h2>About Us</h2>
+        <p>Experience luxury and tranquility in our beautifully appointed rooms and suites. We provide world‑class
+            amenities, fine dining, and exceptional service to make your stay unforgettable.</p>
+    </section>
+
+    <section>
+        <h2>Why Choose Us?</h2>
+        <ul>
+            <li>Prime location with breathtaking views</li>
+            <li>Luxury spa and wellness centre</li>
+            <li>Gourmet dining experiences</li>
+            <li>Personalised concierge services</li>
+        </ul>
+    </section>
+
     <script src="js/script.js"></script>
 </body>
+
 </html>

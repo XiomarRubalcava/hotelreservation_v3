@@ -1,39 +1,51 @@
-<!-- Rooms page for searching and reserving available hotel rooms -->
+<!-- docs/rooms.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hotel Reservation – Rooms</title>
-    <link rel="stylesheet" href="css/styles.css" />
+    <meta charset="UTF-8">
+    <title>Search Rooms</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/rooms.css">
 </head>
+
 <body>
-    <header>
-        <nav>
-            <a href="index.html" class="logo">Hotel Reservation</a>
-            <ul class="nav-links">
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="logo">Hotel Reservation</div>
+        <nav id="navMenu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="login.html">Login/Register</a></li>
-                <li><a href="rooms.html" class="active">Rooms</a></li>
+                <li><a href="rooms.html">Rooms</a></li>
                 <li><a href="reservations.html">My Reservations</a></li>
             </ul>
         </nav>
+        <button id="navToggle">&#9776;</button>
     </header>
-    <main>
-        <section class="search-section">
-            <h2>Search Available Rooms</h2>
-            <form id="searchForm">
-                <label for="checkIn">Check‑in Date:</label>
-                <input type="date" id="checkIn" required />
-                <label for="checkOut">Check‑out Date:</label>
-                <input type="date" id="checkOut" required />
-                <button type="submit" class="btn-primary">Search</button>
-            </form>
-        </section>
-        <section id="roomsContainer" class="rooms-container"></section>
-    </main>
-    <footer>
-        <p>&copy; 2025 Hotel Reservation. All rights reserved.</p>
-    </footer>
+
+    <section>
+        <h2>Search Available Rooms</h2>
+        <form onsubmit="searchRooms(event)">
+            <label for="check_in">Check‑in Date:</label>
+            <input type="date" id="check_in" required>
+            <label for="check_out">Check‑out Date:</label>
+            <input type="date" id="check_out" required>
+            <button type="submit">Search</button>
+        </form>
+    </section>
+
+    <section>
+        <div id="roomsContainer" class="room-grid">
+            <!-- Rooms will be injected here -->
+        </div>
+    </section>
+
     <script src="js/script.js"></script>
 </body>
+
 </html>

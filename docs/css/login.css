@@ -1,0 +1,18 @@
+/* docs/css/login.css */
+/* Additional styles for the login/register page */
+section {
+    margin: 2rem 1rem;
+}
+
+section h2 {
+    margin-top: 0;
+}
+
+@media (min-width: 768px) {
+
+    #loginForm,
+    #registerForm {
+        max-width: 450px;
+        margin: 1rem auto;
+    }
+}

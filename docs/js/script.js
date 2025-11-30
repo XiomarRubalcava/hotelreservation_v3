@@ -1,273 +1,237 @@
-/*
- * Common JavaScript for the hotel reservation front‑end
- * This script handles login/registration, searching rooms, creating reservations
- * and loading reservation history. It depends on elements present on each page
- * and therefore guards operations based on the existence of specific forms.
- */
-
-// Base URL for your API endpoints (update port if your backend runs on a different port)
+// docs/js/script.js
+// Base URL for your API endpoints on Render
 const API_BASE_URL = "https://hotelreservation-v3-2.onrender.com/api/v1";
 
-
-// Wait for the DOM to be fully loaded before attaching event listeners
-document.addEventListener('DOMContentLoaded', () => {
-  /* --------------------------------------------------------------------------
-   * Toggle between login and registration forms
-   */
-  const loginToggleButton = document.getElementById('show-login');
-  const registerToggleButton = document.getElementById('show-register');
-  const loginFormContainer = document.getElementById('login-form');
-  const registerFormContainer = document.getElementById('register-form');
-  if (loginToggleButton && registerToggleButton && loginFormContainer && registerFormContainer) {
-    // Helper to update active classes on buttons and forms
-    function showForm(formName) {
-      if (formName === 'login') {
-        loginFormContainer.classList.add('active');
-        registerFormContainer.classList.remove('active');
-        loginToggleButton.classList.add('active');
-        registerToggleButton.classList.remove('active');
-      } else {
-        registerFormContainer.classList.add('active');
-        loginFormContainer.classList.remove('active');
-        registerToggleButton.classList.add('active');
-        loginToggleButton.classList.remove('active');
-      }
-    }
-    // Attach click listeners for toggling
-    loginToggleButton.addEventListener('click', () => showForm('login'));
-    registerToggleButton.addEventListener('click', () => showForm('register'));
-  }
-
-  /* --------------------------------------------------------------------------
-   * Handle Login
-   */
-  const loginForm = document.getElementById('loginForm');
-  if (loginForm) {
-    loginForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value;
-      const messageEl = document.getElementById('loginMessage');
-      messageEl.textContent = '';
-      try {
-        const response = await fetch(`${API_BASE_URL}/users/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
-        const data = await response.json();
-        if (response.ok) {
-          // Assume API returns the user ID
-          const userId = data.userId || data.user_id || (data.user && data.user.user_id);
-          if (userId) {
-            localStorage.setItem('userId', userId);
-          }
-          // Optionally store a token if provided
-          if (data.token) {
-            localStorage.setItem('authToken', data.token);
-          }
-          // Redirect to rooms page upon successful login
-          window.location.href = 'rooms.html';
-        } else {
-          messageEl.textContent = data.message || 'Login failed. Please try again.';
-        }
-      } catch (error) {
-        console.error('Login error:', error);
-        messageEl.textContent = 'An error occurred while attempting to login.';
-      }
+// Navigation toggle for mobile
+document.addEventListener("DOMContentLoaded", () => {
+  const navToggle = document.getElementById("navToggle");
+  const navMenu = document.getElementById("navMenu");
+  if (navToggle && navMenu) {
+    navToggle.addEventListener("click", () => {
+      navMenu.style.display = navMenu.style.display === "flex" ? "none" : "flex";
     });
   }
 
-  /* --------------------------------------------------------------------------
-   * Handle Registration
-   */
-  const registerForm = document.getElementById('registerForm');
+  // Setup event handlers on forms if present
+  const registerForm = document.getElementById("registerForm");
+  const loginForm = document.getElementById("loginForm");
+  const reservationForm = document.getElementById("reservationForm");
+
   if (registerForm) {
-    registerForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const firstName = document.getElementById('registerFirstName').value.trim();
-      const lastName = document.getElementById('registerLastName').value.trim();
-      const email = document.getElementById('registerEmail').value.trim();
-      const password = document.getElementById('registerPassword').value;
-      const phoneNumber = document.getElementById('registerPhone').value.trim();
-      const messageEl = document.getElementById('registerMessage');
-      messageEl.textContent = '';
-      try {
-        const response = await fetch(`${API_BASE_URL}/users/register`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ first_name: firstName, last_name: lastName, email, password, phone_number: phoneNumber }),
-        });
-        const data = await response.json();
-        if (response.ok) {
-          // Registration success: show a message and optionally switch to login form
-          messageEl.style.color = 'green';
-          messageEl.textContent = data.message || 'Registration successful. You can now log in.';
-          // Switch to login view
-          if (loginToggleButton) {
-            loginToggleButton.click();
-          }
-        } else {
-          messageEl.style.color = '#c0392b';
-          messageEl.textContent = data.message || 'Registration failed. Please try again.';
-        }
-      } catch (error) {
-        console.error('Registration error:', error);
-        messageEl.style.color = '#c0392b';
-        messageEl.textContent = 'An error occurred while attempting to register.';
-      }
-    });
+    registerForm.addEventListener("submit", handleRegister);
+  }
+  if (loginForm) {
+    loginForm.addEventListener("submit", handleLogin);
+  }
+  if (reservationForm) {
+    reservationForm.addEventListener("submit", handleReservation);
   }
 
-  /* --------------------------------------------------------------------------
-   * Search and display available rooms
-   */
-  const searchForm = document.getElementById('searchForm');
-  const roomsContainer = document.getElementById('roomsContainer');
-  if (searchForm && roomsContainer) {
-    searchForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const checkIn = document.getElementById('checkIn').value;
-      const checkOut = document.getElementById('checkOut').value;
-      // Clear any previous results
-      roomsContainer.innerHTML = '';
-      if (!checkIn || !checkOut) {
-        return;
-      }
-      try {
-        const response = await fetch(`${API_BASE_URL}/rooms/available?check_in=${checkIn}&check_out=${checkOut}`);
-        const data = await response.json();
-        if (response.ok) {
-          renderRooms(data.rooms || [], checkIn, checkOut);
-        } else {
-          roomsContainer.innerHTML = `<p>${data.message || 'Failed to fetch available rooms.'}</p>`;
-        }
-      } catch (error) {
-        console.error('Error fetching rooms:', error);
-        roomsContainer.innerHTML = '<p>An error occurred while fetching rooms.</p>';
-      }
-    });
-    // Attach click listener to handle room reservation (event delegation)
-    roomsContainer.addEventListener('click', async (event) => {
-      const button = event.target;
-      if (button.classList.contains('reserve-btn')) {
-        const roomId = button.dataset.roomId;
-        const pricePerNight = parseFloat(button.dataset.price);
-        const checkIn = document.getElementById('checkIn').value;
-        const checkOut = document.getElementById('checkOut').value;
-        // Ensure user is logged in
-        const userId = localStorage.getItem('userId');
-        if (!userId) {
-          alert('Please log in before making a reservation.');
-          window.location.href = 'login.html';
-          return;
-        }
-        // Calculate total price based on number of nights
-        const nights = (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
-        const totalPrice = isNaN(pricePerNight) ? 0 : pricePerNight * nights;
-        try {
-          const response = await fetch(`${API_BASE_URL}/reservations`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              user_id: parseInt(userId, 10),
-              room_id: parseInt(roomId, 10),
-              check_in_date: checkIn,
-              check_out_date: checkOut,
-              total_price: totalPrice,
-            }),
-          });
-          const data = await response.json();
-          if (response.ok) {
-            alert(data.message || 'Reservation created successfully.');
-            // Redirect to reservations page after booking
-            window.location.href = 'reservations.html';
-          } else {
-            alert(data.message || 'Failed to create reservation.');
-          }
-        } catch (error) {
-          console.error('Error creating reservation:', error);
-          alert('An error occurred while creating the reservation.');
-        }
-      }
-    });
-  }
-
-  // Function to render rooms in the DOM
-  function renderRooms(rooms, checkIn, checkOut) {
-    roomsContainer.innerHTML = '';
-    if (!rooms.length) {
-      roomsContainer.innerHTML = '<p>No rooms available for the selected dates.</p>';
-      return;
-    }
-    rooms.forEach((room) => {
-      const card = document.createElement('div');
-      card.classList.add('room-card');
-      card.innerHTML = `
-        <div>
-          <h3>Room ${room.room_number || room.room_id}</h3>
-          <p>Type: ${room.room_type}</p>
-          <p>Price per night: $${Number(room.price_per_night).toFixed(2)}</p>
-          <p>Capacity: ${room.capacity}</p>
-          <p>${room.description || ''}</p>
-        </div>
-        <button class="btn-primary reserve-btn" data-room-id="${room.room_id}" data-price="${room.price_per_night}">Reserve</button>
-      `;
-      roomsContainer.appendChild(card);
-    });
-  }
-
-  /* --------------------------------------------------------------------------
-   * Load and display user's reservations
-   */
-  const reservationsTable = document.querySelector('#reservationsTable tbody');
-  const reservationsMessage = document.getElementById('reservationsMessage');
-  if (reservationsTable && reservationsMessage) {
-    loadReservations();
-  }
-
-  async function loadReservations() {
-    const userId = localStorage.getItem('userId');
-    if (!userId) {
-      reservationsMessage.textContent = 'Please log in to view your reservations.';
-      return;
-    }
-    try {
-      const response = await fetch(`${API_BASE_URL}/reservations/${userId}`);
-      const data = await response.json();
-      if (response.ok) {
-        const reservations = data.reservations || data || [];
-        if (!reservations.length) {
-          reservationsMessage.textContent = 'You do not have any reservations yet.';
-          return;
-        }
-        reservationsMessage.textContent = '';
-        reservationsTable.innerHTML = '';
-        reservations.forEach((res) => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${res.reservation_id}</td>
-            <td>${res.room_id}</td>
-            <td>${formatDate(res.check_in_date)}</td>
-            <td>${formatDate(res.check_out_date)}</td>
-            <td>$${Number(res.total_price).toFixed(2)}</td>
-            <td>${res.status}</td>
-          `;
-          reservationsTable.appendChild(tr);
-        });
-      } else {
-        reservationsMessage.textContent = data.message || 'Failed to retrieve reservations.';
-      }
-    } catch (error) {
-      console.error('Error loading reservations:', error);
-      reservationsMessage.textContent = 'An error occurred while loading your reservations.';
-    }
-  }
-
-  // Utility function to format dates in YYYY-MM-DD format
-  function formatDate(dateInput) {
-    if (!dateInput) return '';
-    const date = new Date(dateInput);
-    return date.toISOString().split('T')[0];
+  // Load user reservations if we are on the reservations page
+  const reservationsTableBody = document.getElementById("reservationsTableBody");
+  if (reservationsTableBody) {
+    loadUserReservations();
   }
 });
+
+// Register user
+async function handleRegister(event) {
+  event.preventDefault();
+  const form = event.target;
+  clearMessages(form);
+
+  const body = {
+    first_name: form.first_name.value.trim(),
+    last_name: form.last_name.value.trim(),
+    email: form.email.value.trim(),
+    password: form.password.value,
+    phone_number: form.phone_number.value.trim(),
+  };
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/users/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      showMessage(form, "Account created successfully!", "success");
+      form.reset();
+    } else {
+      showMessage(form, data.message || "Failed to register user.", "error");
+    }
+  } catch (err) {
+    showMessage(form, "Failed to register user.", "error");
+  }
+}
+
+// Log in user
+async function handleLogin(event) {
+  event.preventDefault();
+  const form = event.target;
+  clearMessages(form);
+
+  const body = {
+    email: form.email.value.trim(),
+    password: form.password.value,
+  };
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/users/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      // Save userId in localStorage
+      localStorage.setItem("userId", data.user_id);
+      showMessage(form, "Login successful. Redirecting...", "success");
+      setTimeout(() => {
+        window.location.href = "rooms.html";
+      }, 1000);
+    } else {
+      showMessage(form, data.message || "Login failed.", "error");
+    }
+  } catch (err) {
+    showMessage(form, "Login failed.", "error");
+  }
+}
+
+// Load rooms based on search
+async function searchRooms(event) {
+  event.preventDefault();
+  const checkInInput = document.getElementById("check_in");
+  const checkOutInput = document.getElementById("check_out");
+
+  if (!checkInInput.value || !checkOutInput.value) {
+    alert("Please select check-in and check-out dates.");
+    return;
+  }
+
+  const query = `?check_in=${checkInInput.value}&check_out=${checkOutInput.value}`;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/rooms/available${query}`);
+    const data = await res.json();
+    if (res.ok) {
+      renderRooms(data.rooms);
+    } else {
+      renderRooms([]);
+    }
+  } catch (err) {
+    renderRooms([]);
+  }
+}
+
+// Render rooms on the page
+function renderRooms(rooms) {
+  const roomsContainer = document.getElementById("roomsContainer");
+  roomsContainer.innerHTML = "";
+  if (!rooms || rooms.length === 0) {
+    roomsContainer.innerHTML = "<p>No rooms available for the selected dates.</p>";
+    return;
+  }
+  rooms.forEach((room) => {
+    const card = document.createElement("div");
+    card.className = "room-card";
+    card.innerHTML = `
+      <h3>Room ${room.room_number}</h3>
+      <p>Type: ${room.room_type}</p>
+      <p>Price per night: $${room.price_per_night}</p>
+      <p>Capacity: ${room.capacity}</p>
+      <p>${room.description || ""}</p>
+    `;
+    const reserveBtn = document.createElement("button");
+    reserveBtn.textContent = "Reserve";
+    reserveBtn.addEventListener("click", () => reserveRoom(room.room_id));
+    card.appendChild(reserveBtn);
+    roomsContainer.appendChild(card);
+  });
+}
+
+// Reserve a specific room
+async function reserveRoom(roomId) {
+  const userId = localStorage.getItem("userId");
+  if (!userId) {
+    alert("Please log in first.");
+    return;
+  }
+
+  // Use the date inputs from rooms page
+  const checkIn = document.getElementById("check_in").value;
+  const checkOut = document.getElementById("check_out").value;
+  if (!checkIn || !checkOut) {
+    alert("Please select dates.");
+    return;
+  }
+
+  const body = {
+    user_id: userId,
+    room_id: roomId,
+    check_in_date: checkIn,
+    check_out_date: checkOut,
+  };
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/reservations`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      alert("Reservation successfully created.");
+    } else {
+      alert(data.message || "Failed to create reservation.");
+    }
+  } catch (err) {
+    alert("Failed to create reservation.");
+  }
+}
+
+// Load reservations for logged-in user
+async function loadUserReservations() {
+  const userId = localStorage.getItem("userId");
+  const reservationsTableBody = document.getElementById("reservationsTableBody");
+  if (!userId || !reservationsTableBody) return;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/reservations/${userId}`);
+    const data = await res.json();
+    reservationsTableBody.innerHTML = "";
+    if (res.ok && data.reservations) {
+      data.reservations.forEach((resv) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${resv.reservation_id}</td>
+          <td>${resv.room_id}</td>
+          <td>${resv.check_in_date}</td>
+          <td>${resv.check_out_date}</td>
+          <td>$${resv.total_price}</td>
+          <td>${resv.status}</td>
+        `;
+        reservationsTableBody.appendChild(row);
+      });
+    } else {
+      reservationsTableBody.innerHTML = "<tr><td colspan='6'>No reservations found.</td></tr>";
+    }
+  } catch (err) {
+    reservationsTableBody.innerHTML = "<tr><td colspan='6'>Error loading reservations.</td></tr>";
+  }
+}
+
+// Helper functions for messages
+function showMessage(form, message, type) {
+  clearMessages(form);
+  const div = document.createElement("div");
+  div.className = type === "success" ? "success" : "error";
+  div.textContent = message;
+  form.appendChild(div);
+}
+
+function clearMessages(form) {
+  const existing = form.querySelectorAll(".success, .error");
+  existing.forEach((msg) => msg.remove());
+}

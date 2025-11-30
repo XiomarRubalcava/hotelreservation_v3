@@ -1,45 +1,53 @@
-<!-- Reservations page for viewing the user's reservation history -->
+<!-- docs/reservations.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hotel Reservation – My Reservations</title>
-    <link rel="stylesheet" href="css/styles.css" />
+    <meta charset="UTF-8">
+    <title>My Reservations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/reservations.css">
 </head>
+
 <body>
-    <header>
-        <nav>
-            <a href="index.html" class="logo">Hotel Reservation</a>
-            <ul class="nav-links">
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="logo">Hotel Reservation</div>
+        <nav id="navMenu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="login.html">Login/Register</a></li>
                 <li><a href="rooms.html">Rooms</a></li>
-                <li><a href="reservations.html" class="active">My Reservations</a></li>
+                <li><a href="reservations.html">My Reservations</a></li>
             </ul>
         </nav>
+        <button id="navToggle">&#9776;</button>
     </header>
-    <main>
-        <section class="reservations-section">
-            <h2>My Reservations</h2>
-            <p id="reservationsMessage" class="form-message"></p>
-            <table id="reservationsTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Room</th>
-                        <th>Check‑In</th>
-                        <th>Check‑Out</th>
-                        <th>Total Price</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 Hotel Reservation. All rights reserved.</p>
-    </footer>
+
+    <section>
+        <h2>My Reservations</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Room</th>
+                    <th>Check‑In</th>
+                    <th>Check‑Out</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="reservationsTableBody">
+                <!-- Reservations will be injected here -->
+            </tbody>
+        </table>
+    </section>
+
     <script src="js/script.js"></script>
 </body>
+
 </html>

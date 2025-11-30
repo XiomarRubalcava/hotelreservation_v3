@@ -1,57 +1,62 @@
-<!-- Login and registration page for the hotel reservation project -->
+<!-- docs/login.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hotel Reservation – Login/Register</title>
-    <link rel="stylesheet" href="css/styles.css" />
+    <meta charset="UTF-8">
+    <title>Login or Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
+
 <body>
-    <header>
-        <nav>
-            <a href="index.html" class="logo">Hotel Reservation</a>
-            <ul class="nav-links">
-                <li><a href="login.html" class="active">Login/Register</a></li>
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="logo">Hotel Reservation</div>
+        <nav id="navMenu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login.html">Login/Register</a></li>
                 <li><a href="rooms.html">Rooms</a></li>
                 <li><a href="reservations.html">My Reservations</a></li>
             </ul>
         </nav>
+        <button id="navToggle">&#9776;</button>
     </header>
-    <main>
-        <section class="auth-container">
-            <div class="form-toggle">
-                <button id="show-login" class="active" type="button">Login</button>
-                <button id="show-register" type="button">Register</button>
-            </div>
-            <!-- Login Form -->
-            <div id="login-form" class="form active">
-                <h2>Login</h2>
-                <form id="loginForm">
-                    <input type="email" id="loginEmail" placeholder="Email" required />
-                    <input type="password" id="loginPassword" placeholder="Password" required />
-                    <button type="submit" class="btn-primary">Login</button>
-                    <p class="form-message" id="loginMessage"></p>
-                </form>
-            </div>
-            <!-- Registration Form -->
-            <div id="register-form" class="form">
-                <h2>Create Account</h2>
-                <form id="registerForm">
-                    <input type="text" id="registerFirstName" placeholder="First Name" required />
-                    <input type="text" id="registerLastName" placeholder="Last Name" required />
-                    <input type="email" id="registerEmail" placeholder="Email" required />
-                    <input type="password" id="registerPassword" placeholder="Password" required />
-                    <input type="tel" id="registerPhone" placeholder="Phone Number" required />
-                    <button type="submit" class="btn-primary">Create Account</button>
-                    <p class="form-message" id="registerMessage"></p>
-                </form>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 Hotel Reservation. All rights reserved.</p>
-    </footer>
+
+    <section>
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" name="email" required>
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Register</h2>
+        <form id="registerForm">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="first_name" required>
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="last_name" required>
+            <label for="registerEmail">Email</label>
+            <input type="email" id="registerEmail" name="email" required>
+            <label for="registerPassword">Password</label>
+            <input type="password" id="registerPassword" name="password" required>
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" name="phone_number">
+            <button type="submit">Create Account</button>
+        </form>
+    </section>
+
     <script src="js/script.js"></script>
 </body>
+
 </html>
