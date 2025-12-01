@@ -251,7 +251,6 @@ async function handleRegister(event) {
 async function handleLogin(event) {
   event.preventDefault();
   const form = event.target;
-
   const body = {
     email: form.email.value.trim(),
     password: form.password.value,
@@ -265,8 +264,9 @@ async function handleLogin(event) {
     });
     const data = await res.json();
 
+    // Save userId from the API (camelCase!)
     if (res.ok) {
-      localStorage.setItem("userId", data.user_id);
+      localStorage.setItem("userId", data.userId);
       alert("Login successful!");
       window.location.href = "rooms.html";
     } else {
@@ -278,15 +278,60 @@ async function handleLogin(event) {
 }
 
 /***************************************************************
+ *  ROOMS PAGE — RENDER ROOMS & RESERVATION HANDLER
+ ***************************************************************/
+function renderRooms(rooms) {
+  const container = document.getElementById("roomsContainer");
+  if (!container) return;
+  container.innerHTML = "";
+
+  if (!rooms || rooms.length === 0) {
+    container.innerHTML = "<p>No rooms available.</p>";
+    return;
+  }
+
+  rooms.forEach(room => {
+    const card = document.createElement("div");
+    card.className = "room-item";
+    const img = document.createElement("img");
+    img.src = getRoomImage(room);
+    img.alt = `${room.room_type} room`;
+
+    const details = document.createElement("div");
+    details.className = "room-details";
+    details.innerHTML = `
+      <h3>Room ${room.room_number}</h3>
+      <p class="room-type">${room.room_type}</p>
+      <p class="price">$${room.price_per_night} per night</p>
+      <p class="capacity">Sleeps ${room.capacity}</p>
+      <p>${room.description || ""}</p>
+    `;
+    const reserveBtn = document.createElement("button");
+    reserveBtn.className = "btn";
+    reserveBtn.textContent = "Reserve";
+    // Pass both room ID and nightly price so we can compute total_price
+    reserveBtn.onclick = () => reserveRoom(room.room_id, room.price_per_night);
+
+    details.appendChild(reserveBtn);
+    card.appendChild(img);
+    card.appendChild(details);
+    container.appendChild(card);
+  });
+}
+
+
+/***************************************************************
  *  RESERVE ROOM — SHARED FUNCTION FOR ROOMS PAGE
  ***************************************************************/
-async function reserveRoom(roomId) {
-  const userId = localStorage.getItem("userId");
+async function reserveRoom(roomId, pricePerNight) {
+  // Pull userId from localStorage and convert to number
+  const userId = parseInt(localStorage.getItem("userId"), 10);
   if (!userId) {
     alert("Please log in first.");
     return;
   }
 
+  // Get dates from the page
   const checkIn = document.getElementById("check_in")?.value;
   const checkOut = document.getElementById("check_out")?.value;
   if (!checkIn || !checkOut) {
@@ -294,21 +339,28 @@ async function reserveRoom(roomId) {
     return;
   }
 
+  // Calculate total nights and price
+  const start = new Date(checkIn);
+  const end = new Date(checkOut);
+  const nights = Math.max(Math.round((end - start) / (1000 * 60 * 60 * 24)), 1);
+  const totalPrice = nights * parseFloat(pricePerNight);
+
   try {
     const res = await fetch(`${API_BASE_URL}/reservations`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        user_id: parseInt(userId, 10),   // ✅ Fix is here!
+        user_id: userId,
         room_id: roomId,
         check_in_date: checkIn,
         check_out_date: checkOut,
+        total_price: totalPrice,
       }),
     });
     const data = await res.json();
 
     if (res.ok) {
-      alert("Reservation created!");
+      alert("Reservation successfully created.");
     } else {
       alert(data.message || "Failed to reserve room.");
     }
@@ -316,4 +368,3 @@ async function reserveRoom(roomId) {
     alert("An error occurred.");
   }
 }
-
