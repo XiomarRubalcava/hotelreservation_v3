@@ -1,53 +1,38 @@
-<!-- docs/reservations.html -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>My Reservations</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans:wght@400;500&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="css/global.css">
+    <title>My Reservations</title>
+    <!-- Import the Montserrat font family -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Dedicated stylesheet for the reservations page -->
     <link rel="stylesheet" href="css/reservations.css">
 </head>
 
 <body>
-    <!-- Navigation -->
-    <header class="navbar">
-        <div class="logo">Hotel Reservation</div>
-        <nav id="navMenu">
+    <!-- Header / Navigation -->
+    <header>
+        <div class="logo">Delta Estate</div>
+        <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="login.html">Login/Register</a></li>
                 <li><a href="rooms.html">Rooms</a></li>
                 <li><a href="reservations.html">My Reservations</a></li>
             </ul>
         </nav>
-        <button id="navToggle">&#9776;</button>
     </header>
 
-    <section>
+    <!-- Main content -->
+    <section class="reservations-section">
         <h2>My Reservations</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Room</th>
-                    <th>Check‑In</th>
-                    <th>Check‑Out</th>
-                    <th>Total Price</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="reservationsTableBody">
-                <!-- Reservations will be injected here -->
-            </tbody>
-        </table>
+        <!-- Container where reservations will be injected by scripts.js -->
+        <div class="reservations-container" id="reservationsContainer"></div>
     </section>
 
-    <script src="js/script.js"></script>
+    <!-- Unified JS file -->
+    <script src="js/scripts.js"></script>
 </body>
 
 </html>

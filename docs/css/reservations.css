@@ -1,23 +1,196 @@
-/* docs/css/reservations.css */
-/* Table styling for reservations */
-table {
+/*
+  Stylesheet for the Reservations page.
+  Keeps the same look & feel as the rooms page with its own classes.
+*/
+
+/* Colour palette */
+:root {
+    --primary-dark: #0f2d30;
+    --accent: #bfa48a;
+    --light-bg: #f3e9dc;
+    --muted-text: #5c5c5c;
+    --highlight: #d8643a;
+}
+
+/* Resets */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+    color: var(--primary-dark);
+    background-color: var(--light-bg);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Header & navigation */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--primary-dark);
+    color: #fff;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header .logo {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+}
+
+nav li a {
+    color: #fff;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 0.2rem;
+}
+
+nav li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent);
+    transition: width 0.3s ease;
+}
+
+nav li a:hover::after {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
 }
 
-th,
-td {
-    padding: 0.8rem 0.5rem;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
+/* Section styling */
+.reservations-section {
+    padding: 3rem 2rem;
+    text-align: center;
 }
 
-th {
-    background-color: var(--primary-color);
-    color: white;
+.reservations-section h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
 }
 
-tr:nth-child(even) {
-    background-color: #f2f2f2;
+/* Container for reservation cards */
+.reservations-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Individual reservation card */
+.reservation-item {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+
+/* Card image */
+.reservation-item img {
+    width: 100%;
+    max-width: 350px;
+    object-fit: cover;
+}
+
+/* Card details */
+.reservation-details {
+    flex: 1;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.reservation-details h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--primary-dark);
+}
+
+.reservation-details .res-room {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.reservation-details .res-dates {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--muted-text);
+}
+
+.reservation-details .res-price {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--highlight);
+    margin-bottom: 0.5rem;
+}
+
+.reservation-details .res-status {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: var(--primary-dark);
+}
+
+/* Generic button style (optional) */
+.btn {
+    display: inline-block;
+    background-color: var(--highlight);
+    color: #fff;
+    padding: 0.8rem 1.6rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .reservation-item {
+        flex-direction: column;
+    }
+
+    .reservation-item img {
+        max-width: 100%;
+        max-height: 220px;
+    }
+
+    .reservation-details {
+        padding: 1rem;
+    }
 }
