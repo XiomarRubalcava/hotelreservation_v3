@@ -1,4 +1,3 @@
-<!-- docs/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,10 +5,11 @@
     <meta charset="UTF-8">
     <title>Hotel Reservation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans:wght@400;500&display=swap"
-        rel="stylesheet">
+    <!-- Google Font for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Base global styles -->
     <link rel="stylesheet" href="css/global.css">
+    <!-- Homepage styles -->
     <link rel="stylesheet" href="css/index.css">
 </head>
 
@@ -23,59 +23,155 @@
                 <li><a href="login.html">Login/Register</a></li>
                 <li><a href="rooms.html">Rooms</a></li>
                 <li><a href="reservations.html">My Reservations</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
             </ul>
         </nav>
+        <!-- mobile menu toggle -->
         <button id="navToggle">&#9776;</button>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
-        <img src="images/hero.png" alt="Hotel exterior">
-        <div class="hero-overlay">
-            <h1>Welcome to Our Hotel</h1>
-            <p>Book your stay with ease and comfort.</p>
-            <a href="rooms.html"><button>View Rooms</button></a>
+        <h1 class="hero-title">Your Sanctuary in The City</h1>
+        <p>Experience elevated comfort, stunning skyline views, and the perfect blend of style and sophistication—
+        all steps away from the energy of downtown.</p>
+        <a class="btn" href="rooms.html">Book Your Stay</a>
+    </section>
+
+    <!-- Stay Section -->
+    <section class="stay-section" id="stay">
+        <h2>Stay With Us</h2>
+        <div class="stay-grid">
+            <div class="stay-card">
+                <img src="images/Queen1.jpg"
+                    alt="Queen Suite">
+                <h3>Queen Suite</h3>
+                <p>A modern and stylish suite featuring a plush queen bed, warm ambient lighting,
+                and an inviting layout perfect for couples or small families.</p>
+                <a class="btn" href="rooms.html">View Room</a>
+            </div>
+            <div class="stay-card">
+                <img src="images/deluxe1.jpg"
+                    alt="Deluxe Suite">
+                <h3>Deluxe Suite</h3>
+                <p>Our premium suite offering exceptional comfort, upgraded amenities,
+                and breathtaking views — perfect for guests seeking an elevated stay.</p>
+                <a class="btn" href="rooms.html">View Room</a>
+            </div>
+            <div class="stay-card">
+                <img src="images/King1.jpg"
+                    alt="King Suite">
+                <h3>King Suite</h3>
+                <p>Spacious comfort with a luxurious king bed, elegant furnishings,
+                and room to unwind after a long day of travel or city exploration.
+                </p>
+                <a class="btn" href="rooms.html">View Room</a>
+            </div>
         </div>
     </section>
 
-    <section>
-        <h2>About Us</h2>
-        <p>Experience luxury and tranquility in our beautifully appointed rooms and suites. We provide world‑class
-            amenities, fine dining, and exceptional service to make your stay unforgettable.</p>
-    </section>
-
-    <!-- Existing section heading -->
-    <section>
-        <h2>Why Choose Us?</h2>
-        <!-- New carousel -->
-        <div class="why-carousel">
-            <div class="carousel-track">
-                <div class="carousel-item">
-                    <h3>Prime Location</h3>
-                    <p>Prime location with breathtaking views</p>
-                </div>
-                <div class="carousel-item">
-                    <h3>Luxury Spa & Wellness</h3>
-                    <p>Luxury spa and wellness centre</p>
-                </div>
-                <div class="carousel-item">
-                    <h3>Gourmet Dining</h3>
-                    <p>Gourmet dining experiences</p>
-                </div>
-                <div class="carousel-item">
-                    <h3>Personalised Concierge</h3>
-                    <p>Personalised concierge services</p>
+    <!-- Experience Section -->
+    <section class="experience-section" id="experience">
+        <h2>Experience</h2>
+        <div class="experience-grid">
+            <div class="experience-item">
+                <img src="images/spa.jpg"
+                    alt="Spa & Wellness">
+                <div class="experience-item-content">
+                    <h3>Spa & Wellness</h3>
+                    <p>Relax your senses with premium spa treatments, aromatherapy, and serene wellness spaces designed
+                    to help you escape the energy of the city.</p>
                 </div>
             </div>
-            <!-- Navigation buttons -->
-            <button class="carousel-button prev">&#10094;</button>
-            <button class="carousel-button next">&#10095;</button>
-            <!-- Dots will be generated by JS -->
-            <div class="carousel-dots"></div>
+            <div class="experience-item">
+                <img src="images/nightlife.jpg"
+                    alt="City Exploration">
+                <div class="experience-item-content">
+                    <h3>City Exploration</h3>
+                    <p>Discover iconic landmarks, cultural hotspots, rooftop lounges, and the vibrant nightlife
+                    all surrounding our central downtown location.</p>
+                </div>
+            </div>
+            <div class="experience-item">
+                <img src="images/dining.jpg"
+                    alt="Downtown Dining">
+                <div class="experience-item-content">
+                    <h3>Downtown Dining</h3>
+                    <p>Savor gourmet dishes crafted by our culinary team, highlighting bold flavors and
+                    a modern twist on classic favorites.</p>
+                </div>
+            </div>
         </div>
     </section>
 
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" id="testimonials">
+        <h2>What Our Guests Say</h2>
+        <div class="testimonial-carousel-container">
+            <div class="testimonial-track">
+                <div class="testimonial-slide">
+                    <p>“The views are breathtaking and the service unmatched. We left feeling rejuvenated and pampered
+                        in every way.”</p>
+                    <span>- Jordan R.</span>
+                </div>
+                <div class="testimonial-slide">
+                    <p>“Every detail was perfect. The rooms, the amenities and the experiences were beyond our
+                        expectations.”</p>
+                    <span>- Alexis M.</span>
+                </div>
+                <div class="testimonial-slide">
+                    <p>“A true sanctuary. The spa treatments and the tranquil setting made this the most relaxing
+                        vacation we've ever had.”</p>
+                    <span>- Chris L.</span>
+                </div>
+            </div>
+            <div class="testimonial-nav">
+                <span data-index="0" class="active"></span>
+                <span data-index="1"></span>
+                <span data-index="2"></span>
+            </div>
+        </div>
+    </section>
 
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-column">
+                <h4>Stay</h4>
+                <ul>
+                    <li><a href="rooms.html">Rooms & Suites</a></li>
+                    <li><a href="reservations.html">My Reservations</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Experience</h4>
+                <ul>
+                    <li><a href="#experience">Spa & Wellness</a></li>
+                    <li><a href="#experience">Outdoor Adventures</a></li>
+                    <li><a href="#experience">Culinary Classes</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li>Phone: (555) 123‑4567</li>
+                    <li>Email: reservations@serenityhotel.com</li>
+                    <li>123 Coastal Road, Big Sur, CA</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Newsletter</h4>
+                <form class="newsletter-form" action="#" method="post">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2025 Serenity Hotel. All rights reserved.</div>
+    </footer>
+
+    <!-- JavaScript -->
     <script src="js/script.js"></script>
 </body>
 

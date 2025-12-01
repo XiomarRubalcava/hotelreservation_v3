@@ -1,8 +1,9 @@
-// docs/js/script.js
-// Base URL for your API endpoints on Render
+/* docs/js/script.js */
+
+/* Base URL for your API endpoints on Render */
 const API_BASE_URL = "https://hotelreservation-v3-2.onrender.com/api/v1";
 
-// Navigation toggle for mobile
+/* Navigation toggle for mobile and form setup */
 document.addEventListener("DOMContentLoaded", () => {
   const navToggle = document.getElementById("navToggle");
   const navMenu = document.getElementById("navMenu");
@@ -12,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Setup event handlers on forms if present
+  // Forms
   const registerForm = document.getElementById("registerForm");
   const loginForm = document.getElementById("loginForm");
   const reservationForm = document.getElementById("reservationForm");
@@ -27,14 +28,44 @@ document.addEventListener("DOMContentLoaded", () => {
     reservationForm.addEventListener("submit", handleReservation);
   }
 
-  // Load user reservations if we are on the reservations page
+  // If we're on the reservations page, load the reservations table
   const reservationsTableBody = document.getElementById("reservationsTableBody");
   if (reservationsTableBody) {
     loadUserReservations();
   }
+
+  // Testimonials carousel setup
+  const testimonialTrack = document.querySelector(".testimonial-track");
+  if (testimonialTrack) {
+    const testimonialSlides = document.querySelectorAll(".testimonial-slide");
+    const testimonialDots = document.querySelectorAll(".testimonial-nav span");
+    let testimonialIndex = 0;
+
+    function updateTestimonialSlider(index) {
+      const slideWidth = testimonialSlides[0].clientWidth;
+      testimonialTrack.style.transform = `translateX(-${index * slideWidth}px)`;
+      testimonialDots.forEach(dot => dot.classList.remove("active"));
+      testimonialDots[index].classList.add("active");
+    }
+
+    testimonialDots.forEach(dot => {
+      dot.addEventListener("click", () => {
+        testimonialIndex = parseInt(dot.dataset.index, 10);
+        updateTestimonialSlider(testimonialIndex);
+      });
+    });
+
+    // Auto slide every 6 seconds
+    setInterval(() => {
+      testimonialIndex = (testimonialIndex + 1) % testimonialSlides.length;
+      updateTestimonialSlider(testimonialIndex);
+    }, 6000);
+
+    window.addEventListener("resize", () => updateTestimonialSlider(testimonialIndex));
+  }
 });
 
-// Register user
+/* Register user */
 async function handleRegister(event) {
   event.preventDefault();
   const form = event.target;
@@ -66,7 +97,7 @@ async function handleRegister(event) {
   }
 }
 
-// Log in user
+/* Log in user */
 async function handleLogin(event) {
   event.preventDefault();
   const form = event.target;
@@ -99,7 +130,38 @@ async function handleLogin(event) {
   }
 }
 
-// Load rooms based on search
+/* Reservation form handler (if you have one) */
+async function handleReservation(event) {
+  event.preventDefault();
+  const form = event.target;
+  clearMessages(form);
+
+  const body = {
+    user_id: localStorage.getItem("userId"),
+    room_id: form.room_id.value,
+    check_in_date: form.check_in.value,
+    check_out_date: form.check_out.value,
+  };
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/reservations`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      showMessage(form, "Reservation created successfully!", "success");
+      form.reset();
+    } else {
+      showMessage(form, data.message || "Failed to create reservation.", "error");
+    }
+  } catch (err) {
+    showMessage(form, "Failed to create reservation.", "error");
+  }
+}
+
+/* Search available rooms */
 async function searchRooms(event) {
   event.preventDefault();
   const checkInInput = document.getElementById("check_in");
@@ -125,15 +187,16 @@ async function searchRooms(event) {
   }
 }
 
-// Render rooms on the page
+/* Render rooms on the page */
 function renderRooms(rooms) {
   const roomsContainer = document.getElementById("roomsContainer");
+  if (!roomsContainer) return;
   roomsContainer.innerHTML = "";
   if (!rooms || rooms.length === 0) {
     roomsContainer.innerHTML = "<p>No rooms available for the selected dates.</p>";
     return;
   }
-  rooms.forEach((room) => {
+  rooms.forEach(room => {
     const card = document.createElement("div");
     card.className = "room-card";
     card.innerHTML = `
@@ -151,7 +214,7 @@ function renderRooms(rooms) {
   });
 }
 
-// Reserve a specific room
+/* Reserve a specific room */
 async function reserveRoom(roomId) {
   const userId = localStorage.getItem("userId");
   if (!userId) {
@@ -159,7 +222,7 @@ async function reserveRoom(roomId) {
     return;
   }
 
-  // Use the date inputs from rooms page
+  // Use the date inputs from the rooms page
   const checkIn = document.getElementById("check_in").value;
   const checkOut = document.getElementById("check_out").value;
   if (!checkIn || !checkOut) {
@@ -191,7 +254,7 @@ async function reserveRoom(roomId) {
   }
 }
 
-// Load reservations for logged-in user
+/* Load reservations for logged-in user */
 async function loadUserReservations() {
   const userId = localStorage.getItem("userId");
   const reservationsTableBody = document.getElementById("reservationsTableBody");
@@ -202,7 +265,7 @@ async function loadUserReservations() {
     const data = await res.json();
     reservationsTableBody.innerHTML = "";
     if (res.ok && data.reservations) {
-      data.reservations.forEach((resv) => {
+      data.reservations.forEach(resv => {
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${resv.reservation_id}</td>
@@ -222,7 +285,7 @@ async function loadUserReservations() {
   }
 }
 
-// Helper functions for messages
+/* Helper functions for messages */
 function showMessage(form, message, type) {
   clearMessages(form);
   const div = document.createElement("div");
@@ -233,60 +296,5 @@ function showMessage(form, message, type) {
 
 function clearMessages(form) {
   const existing = form.querySelectorAll(".success, .error");
-  existing.forEach((msg) => msg.remove());
+  existing.forEach(msg => msg.remove());
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-  const track = document.querySelector('.carousel-track');
-  const slides = Array.from(document.querySelectorAll('.carousel-item'));
-  const prevButton = document.querySelector('.carousel-button.prev');
-  const nextButton = document.querySelector('.carousel-button.next');
-  const dotsContainer = document.querySelector('.carousel-dots');
-
-  let currentIndex = 0;
-
-  // Create dots
-  slides.forEach((_, i) => {
-    const dot = document.createElement('span');
-    dot.dataset.index = i;
-    if (i === 0) dot.classList.add('active');
-    dotsContainer.appendChild(dot);
-  });
-
-  // Update slide position
-  function updateSlider(index) {
-    const slideWidth = slides[0].clientWidth;
-    track.style.transform = `translateX(-${index * slideWidth}px)`;
-    dotsContainer.querySelectorAll('span').forEach(dot => {
-      dot.classList.toggle('active', dot.dataset.index == index);
-    });
-  }
-
-  // Next & previous controls
-  nextButton.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % slides.length;
-    updateSlider(currentIndex);
-  });
-
-  prevButton.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-    updateSlider(currentIndex);
-  });
-
-  // Dots control
-  dotsContainer.addEventListener('click', (e) => {
-    if (e.target.dataset.index) {
-      currentIndex = parseInt(e.target.dataset.index, 10);
-      updateSlider(currentIndex);
-    }
-  });
-
-  // Optional auto‑slide every 5 seconds
-  setInterval(() => {
-    currentIndex = (currentIndex + 1) % slides.length;
-    updateSlider(currentIndex);
-  }, 5000);
-
-  // Re‑calculate on window resize
-  window.addEventListener('resize', () => updateSlider(currentIndex));
-});
