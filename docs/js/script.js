@@ -235,3 +235,58 @@ function clearMessages(form) {
   const existing = form.querySelectorAll(".success, .error");
   existing.forEach((msg) => msg.remove());
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+  const track = document.querySelector('.carousel-track');
+  const slides = Array.from(document.querySelectorAll('.carousel-item'));
+  const prevButton = document.querySelector('.carousel-button.prev');
+  const nextButton = document.querySelector('.carousel-button.next');
+  const dotsContainer = document.querySelector('.carousel-dots');
+
+  let currentIndex = 0;
+
+  // Create dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.dataset.index = i;
+    if (i === 0) dot.classList.add('active');
+    dotsContainer.appendChild(dot);
+  });
+
+  // Update slide position
+  function updateSlider(index) {
+    const slideWidth = slides[0].clientWidth;
+    track.style.transform = `translateX(-${index * slideWidth}px)`;
+    dotsContainer.querySelectorAll('span').forEach(dot => {
+      dot.classList.toggle('active', dot.dataset.index == index);
+    });
+  }
+
+  // Next & previous controls
+  nextButton.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % slides.length;
+    updateSlider(currentIndex);
+  });
+
+  prevButton.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    updateSlider(currentIndex);
+  });
+
+  // Dots control
+  dotsContainer.addEventListener('click', (e) => {
+    if (e.target.dataset.index) {
+      currentIndex = parseInt(e.target.dataset.index, 10);
+      updateSlider(currentIndex);
+    }
+  });
+
+  // Optional auto‑slide every 5 seconds
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % slides.length;
+    updateSlider(currentIndex);
+  }, 5000);
+
+  // Re‑calculate on window resize
+  window.addEventListener('resize', () => updateSlider(currentIndex));
+});
