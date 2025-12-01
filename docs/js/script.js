@@ -268,8 +268,8 @@ async function handleLogin(event) {
     if (res.ok) {
       localStorage.setItem("userId", data.userId);
       alert("Login successful!");
-      // Redirect to the reservations page instead of rooms to meet user expectations
-      window.location.href = "reservations.html";
+      // After successful login, redirect to the rooms page so user can reserve a room
+      window.location.href = "rooms.html";
     } else {
       alert(data.message || "Login failed.");
     }
@@ -362,6 +362,8 @@ async function reserveRoom(roomId, pricePerNight) {
 
     if (res.ok) {
       alert("Reservation successfully created.");
+      // After booking, send the user to My Reservations page
+      window.location.href = "reservations.html";
     } else {
       alert(data.message || "Failed to reserve room.");
     }
@@ -401,4 +403,19 @@ document.addEventListener("DOMContentLoaded", () => {
   if (loginForm) {
     loginForm.addEventListener("submit", handleLogin);
   }
+
+  // Attach click handlers to links that require the user to be logged in before navigating to rooms
+  const loginRequiredLinks = document.querySelectorAll('.require-login');
+  loginRequiredLinks.forEach(link => {
+    link.addEventListener('click', event => {
+      event.preventDefault();
+      const userId = localStorage.getItem('userId');
+      // If not logged in, send them to the login page first; otherwise proceed to rooms
+      if (!userId) {
+        window.location.href = 'login.html';
+      } else {
+        window.location.href = 'rooms.html';
+      }
+    });
+  });
 });
