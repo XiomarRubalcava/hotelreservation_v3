@@ -299,7 +299,7 @@ async function reserveRoom(roomId) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        user_id: userId,
+        user_id: parseInt(userId, 10),   // ✅ Fix is here!
         room_id: roomId,
         check_in_date: checkIn,
         check_out_date: checkOut,
@@ -316,3 +316,4 @@ async function reserveRoom(roomId) {
     alert("An error occurred.");
   }
 }
+
