@@ -108,7 +108,7 @@ function renderRooms(rooms) {
     const reserveBtn = document.createElement("button");
     reserveBtn.className = "btn";
     reserveBtn.textContent = "Reserve";
-    reserveBtn.onclick = () => reserveRoom(room.room_id);
+    reserveBtn.onclick = () => reserveRoom(room.room_id, room.price_per_night);
 
     details.appendChild(reserveBtn);
     card.appendChild(img);
@@ -268,7 +268,8 @@ async function handleLogin(event) {
     if (res.ok) {
       localStorage.setItem("userId", data.userId);
       alert("Login successful!");
-      window.location.href = "rooms.html";
+      // Redirect to the reservations page instead of rooms to meet user expectations
+      window.location.href = "reservations.html";
     } else {
       alert(data.message || "Login failed.");
     }
@@ -368,3 +369,36 @@ async function reserveRoom(roomId, pricePerNight) {
     alert("An error occurred.");
   }
 }
+
+/***************************************************************
+ *  NAVIGATION TOGGLE & FORM HANDLERS
+ ***************************************************************/
+document.addEventListener("DOMContentLoaded", () => {
+  const navToggle = document.getElementById("navToggle");
+  const navMenu = document.getElementById("navMenu");
+  // Mobile navigation toggle
+  if (navToggle && navMenu) {
+    navToggle.addEventListener("click", () => {
+      // When toggling, switch between hidden and flex/block for mobile layout
+      const isVisible = navMenu.style.display === "flex" || navMenu.style.display === "block";
+      navMenu.style.display = isVisible ? "none" : "flex";
+    });
+    // Hide the menu after selecting a link on small screens
+    navMenu.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        if (window.innerWidth <= 768) {
+          navMenu.style.display = "none";
+        }
+      });
+    });
+  }
+  // Attach register and login form listeners if present
+  const registerForm = document.getElementById("registerForm");
+  if (registerForm) {
+    registerForm.addEventListener("submit", handleRegister);
+  }
+  const loginForm = document.getElementById("loginForm");
+  if (loginForm) {
+    loginForm.addEventListener("submit", handleLogin);
+  }
+});

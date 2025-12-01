@@ -8,13 +8,12 @@
     <!-- Import Montserrat font family for a modern look -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Dedicated styles for the login/register page -->
-    <link rel="stylesheet" href="css/login.css
-    ">
+    <link rel="stylesheet" href="css/login.css">
 </head>
 
 <body>
     <!-- Navigation -->
-    <header class="navbar">
+    <header>
         <div class="logo">Delta Estate</div>
         <nav id="navMenu">
             <ul>
@@ -24,16 +23,17 @@
                 <li><a href="reservations.html">My Reservations</a></li>
             </ul>
         </nav>
+        <!-- Mobile menu toggle -->
         <button id="navToggle">&#9776;</button>
     </header>
-
     <!-- Authentication section -->
     <section class="auth-section">
         <div class="auth-container">
             <!-- Login card -->
             <div class="auth-card login-card">
                 <h3>Login</h3>
-                <form id="loginForm">
+                <!-- Attach handler via onsubmit attribute for graceful degradation -->
+                <form id="loginForm" onsubmit="handleLogin(event)">
                     <label for="loginEmail">Email</label>
                     <input type="email" id="loginEmail" name="email" required>
                     <label for="loginPassword">Password</label>
@@ -44,7 +44,8 @@
             <!-- Register card -->
             <div class="auth-card register-card">
                 <h3>Register</h3>
-                <form id="registerForm">
+                <!-- Attach handler via onsubmit attribute -->
+                <form id="registerForm" onsubmit="handleRegister(event)">
                     <label for="firstName">First Name</label>
                     <input type="text" id="firstName" name="first_name" required>
                     <label for="lastName">Last Name</label>
@@ -60,8 +61,8 @@
             </div>
         </div>
     </section>
-
-    <script src="scripts.js"></script>
+    <!-- JavaScript -->
+    <script src="js/script.js"></script>
 </body>
 
 </html>
