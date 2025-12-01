@@ -1,47 +1,48 @@
-<!-- docs/rooms.html -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Search Rooms</title>
+    <title>Rooms</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans:wght@400;500&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="css/global.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- This page has its own dedicated stylesheet for layout and styling -->
     <link rel="stylesheet" href="css/rooms.css">
 </head>
 
 <body>
     <!-- Navigation -->
-    <header class="navbar">
-        <div class="logo">Hotel Reservation</div>
-        <nav id="navMenu">
+    <header>
+        <div class="logo"> Delta Estate</div>
+        <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="login.html">Login/Register</a></li>
                 <li><a href="rooms.html">Rooms</a></li>
                 <li><a href="reservations.html">My Reservations</a></li>
             </ul>
         </nav>
-        <button id="navToggle">&#9776;</button>
     </header>
 
-    <section>
-        <h2>Search Available Rooms</h2>
+    <!-- Search Section -->
+    <section class="rooms-search">
+        <!-- Update heading to better reflect the purpose of this page -->
+        <h2>Select a Room</h2>
         <form onsubmit="searchRooms(event)">
-            <label for="check_in">Check‑in Date:</label>
+            <!--
+        The date inputs allow guests to pick check‑in and check‑out dates.
+        By default these fields are prefilled with today and tomorrow via
+        scripts.js so there is always a valid date range selected.
+      -->
             <input type="date" id="check_in" required>
-            <label for="check_out">Check‑out Date:</label>
             <input type="date" id="check_out" required>
             <button type="submit">Search</button>
         </form>
     </section>
 
-    <section>
-        <div id="roomsContainer" class="room-grid">
-            <!-- Rooms will be injected here -->
+    <!-- Rooms Listing -->
+    <section class="rooms-container">
+        <div id="roomsContainer">
+            <!-- Rooms will be injected here by scripts.js -->
         </div>
     </section>
 
